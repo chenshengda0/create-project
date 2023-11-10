@@ -23,3 +23,8 @@
 ```
     cli --bin create-react-app
 ```
+
+## SSE 项目
+```
+    cli --bin create-sse-app
+```
