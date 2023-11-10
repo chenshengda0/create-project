@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            /*pointer-events: none;*/
+            touch-action: none;
+        }
+        body{
+            width: 100vw;
+            min-height: 100vh;
+        }
+        #canvas{
+            width: 360px;
+            height: 600px;
+            position: absolute;
+            transform: translate(-50%, -50%);
+            left : 50%;
+            top: 50%;
+            background: #ee82ee;
+        }
+        #showImg{
+            height: 120px;
+            /* animation-name: jump;
+            animation-timing-function: steps(4, end);
+            animation-duration: 2s;
+            animation-delay: 0s;
+            animation-direction: both;
+            animation-iteration-count: infinite; */
+        }
+
+        @keyframes jump {
+            0% {
+                transform: matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
+            }
+            50% {
+                transform: matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,20,20,0,1);
+            }
+            100% {
+                transform: matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
+            }
+        } 
+
+    </style>
+</head>
+<body>
+    <img src="./logo.png" alt="" id = "showImg" >
+    <div id="canvas"></div>
+</body>
+
+<script>
+    const dom = document.getElementById( "showImg" )
+    window.addEventListener( "dream_canvas_save_img", function(e){
+        dom.src = e.detail.blobURL;
+        console.log( dom )
+    } )
+    window.addEventListener( "dream_canvas_show_color", function(e){
+        console.log( "显示颜色", e )
+    } )
+</script>
+
+</html>
