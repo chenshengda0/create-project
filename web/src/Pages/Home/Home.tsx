@@ -72,6 +72,7 @@ const HomeParent = new Proxy( function(SonComponent:any){
     return connect(
         (store:RootStore) => ({
             PrivateStructStore: store.PrivateStructStore,
+            SourceStore: store.SourceStore,
         }),{
 
         }
@@ -85,7 +86,14 @@ export default class Home extends Component<any>{
         return (
             <>
                 <Info>
-                    <h1>hello world</h1>
+                    {
+                        this.props.SourceStore.map( (row:any)=>{
+                            return (
+                                <h1>{row}</h1>
+                            )
+                        } )
+                    }
+                    
                 </Info>
             </>
         )

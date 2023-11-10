@@ -36,6 +36,8 @@ declare interface PrivateStructStoreType{
 }
 
 declare interface RootStore{
+    //source event
+    SourceStore: any[],
     //菜单
     MenusStore: MenusStoreType[],
 
