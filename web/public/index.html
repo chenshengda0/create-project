@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+        <link href="%PUBLIC_URL%/mui/css/mui.min.css" rel="stylesheet"/>
+        <title></title>
+        <style>
+            * {
+                touch-action: none;
+            }
+            /*设置高度等于屏幕高度*/
+            html,body,#root{
+                margin: 0;
+                padding: 0;
+                height: 100%;
+            }
+            #root{
+                /* font-family: PingFang SC; */
+                font-weight: 500;
+                color: #000;
+                font-size: 13px;
+                background: #FFF;
+                font-family: Source Han Sans CN-Regular, Source Han Sans CN;
+            }
+            .mui-content{
+                background: transparent;
+            }
+
+            :where(.css-dev-only-do-not-override-1m62vyb).ant-drawer .ant-drawer-content{
+                background: transparent !important;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="root">
+            
+        </div>
+        <script src="%PUBLIC_URL%/mui/js/mui.js"></script>
+    </body>
+</html>
