@@ -23,3 +23,11 @@
 ```
     cli --bin create-react-app
 ```
+
+## npm项目
+
+```
+    cli --bin create-npm-app
+```
+
+
