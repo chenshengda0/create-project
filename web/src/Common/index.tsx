@@ -12,7 +12,6 @@ import {
     T,
     getAxis,
     matrix3D,
-    matrix2css,
     determinant,
     adjoint, 
     perspectiveNO, 
@@ -34,7 +33,6 @@ export {
     T,              //矩阵转置
     getAxis,        //矩阵乘积
     matrix3D,       //矩阵转数组
-    matrix2css,     //矩阵转css
     determinant,    //矩阵行列式
     adjoint,        //伴随矩阵
     perspectiveNO,  //透视矩阵
