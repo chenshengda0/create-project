@@ -25,7 +25,7 @@
     git config --add core.filemode false
 ```
 
-## npm
+## npm(cli)
 ```
     # 环境配置: nodejs yarn
 
@@ -33,7 +33,7 @@
     npm install -g dream-cli
 ```
 
-## 前端app项目
+## 前端app项目(前端)
 
 ```
     # 环境配置: nodejs yarn
@@ -42,7 +42,7 @@
     cli --bin create-react-app
 ```
 
-## npm项目
+## npm项目(前端)
 
 ```
     # 环境配置: nodejs yarn
@@ -50,7 +50,7 @@
     cli --bin create-npm-app
 ```
 
-## SSE项目
+## SSE项目(前端、后端、sse)
 
 ```
     # 环境配置: nodejs yarn
@@ -59,7 +59,7 @@
     cli --bin create-sse-app
 ```
 
-## docker-compose项目
+## docker-compose项目(docker)
 ```
     # 环境配置: docker docker-compose
 
@@ -67,7 +67,7 @@
     cli --bin create-docker-server
 ```
 
-## full项目
+## full项目(前端、后端、sse、docker)
 ```
     # 环境配置: nodejs yarn docker docker-compose
 
@@ -77,7 +77,3 @@
     # 安装项目
     cli --bin create-full-app
 ```
-
-
-
-
