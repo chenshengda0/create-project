@@ -1,0 +1,148 @@
+version: '3'
+
+networks:
+  dev-runtime:
+    driver:
+      bridge
+
+services:
+  #nginx 服务器
+  dev-main:
+    container_name: dev-main
+    build: 
+      context: ./
+      dockerfile: main/Dockerfile
+    environment:
+      - NGINX_PORT=80
+    ports:
+      - 80:80
+    volumes:
+      - ./main/html:/usr/share/nginx/html
+      - ./main/conf.d:/etc/nginx/conf.d
+      - ./main/key:/etc/nginx/key
+      - ./main/favicon:/etc/nginx/favicon
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    networks:
+      - dev-runtime
+
+  #mysql服务器
+  dev-mysql:
+    container_name: dev-mysql
+    restart: always
+    build:
+      context: ./
+      dockerfile: mysql/Dockerfile
+    environment:
+      - MYSQL_ROOT_PASSWORD=231510622abc
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+    volumes:
+      - ./mysql/datadir:/var/lib/mysql
+    ports:
+      - 3306:3306
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    networks:
+      - dev-runtime
+
+  #mysql 管理平台
+  dev-phpmyadmin:
+    container_name: dev-phpmyadmin
+    restart: always
+    image: phpmyadmin
+    ports:
+      - 8880:80
+    environment:
+      - PMA_ARBITRARY=1
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    networks:
+      - dev-runtime
+
+  #钱包服务器
+  #personal.sendTransaction( {from: eth.accounts[0], to: "0xFF42c85dB8A5cE35d3666E3422B683f58D500094", value: web3.toWei(500000000000000,"ether")} )
+  #personal.sendTransaction( {from: eth.accounts[0], to: "0xa896481dc3D97cB97F0aC0075532602d64cAE1F2", value: web3.toWei(500000000000000,"ether")} )
+  dev-money:
+    container_name: dev-money
+    restart: always
+    image: ethereum/client-go:v1.13.4
+    ports:
+      - 8540:8545
+      - 8546:8546
+    volumes:
+      - ./keystore:/root/.ethereum/keystore
+    command:
+      - --datadir=/root/.ethereum
+      - --dev
+      - --dev.period=0
+      - --dev.gaslimit=0xffffffff
+      - --rpc.txfeecap=0
+      #- --mine
+      - --miner.gaslimit=0xbebc200
+      - --networkid=1337
+      - --http.corsdomain=* 
+      - --http 
+      - --http.addr=0.0.0.0 
+      - --http.port=8545
+      - --http.api=admin,debug,web3,eth,txpool,net,personal
+      - --ws
+      - --ws.addr=0.0.0.0
+      - --ws.port=8546
+      - --ws.api=eth,net,web3
+      - --port=30303
+    networks:
+      - dev-runtime
+
+  #rabbitmq 服务器
+  dev-rabbitmq:
+    container_name: dev-rabbitmq
+    #restart: always
+    build:
+      context: ./
+      dockerfile: rabbitmq/Dockerfile
+    environment:
+      - RABBITMQ_DEFAULT_USER=dream 
+      - RABBITMQ_DEFAULT_PASS=231510622abc
+      - PATH=$PATH:/opt/rabbitmq/sbin:/usr/local/bin/:/bin
+    # ports:
+    #   - 15672:15672
+    #   - 15674:15674
+    #   - 5672:5672
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    networks:
+      - dev-runtime
+
+  #负载均衡服务器
+  dev-haproxy:
+    container_name: dev-haproxy
+    #restart: always
+    build:
+      context: ./
+      dockerfile: haproxy/Dockerfile
+    ports:
+      - 35672:35672
+      - 35674:35674
+      - 5670:5670
+      - 9999:9999
+      - 8080:8080
+    # depends_on:
+    #   - dev-rabbitmq
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    networks:
+      - dev-runtime
+
+  #node服务器
+  dev-node:
+    container_name: dev-node
+    build: 
+      context: ./
+      dockerfile: node/Dockerfile
+    ports:
+      - 8088:8000
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    networks:
+      - dev-runtime
+
