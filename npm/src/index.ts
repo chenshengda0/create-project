@@ -1,9 +1,7 @@
 #!/usr/bin/env node
-import {EventEmitter} from "events"
+import {WithMysql} from "./Common"
 const app = (require("express"))()
-const source = new EventEmitter()
-source.setMaxListeners( 500 )
-const path = require( "path" );
+//const path = require( "path" );
 import {
     WithRabbitmq,
 } from "./Common"
@@ -13,16 +11,30 @@ app.listen( process.env.LISTEN_PORT, ()=>{
 } )
 
 app.get( "/", async function(req:any,res:any){
+    const pool = await WithMysql.getInstance();
+    const conn = await new Promise( (resolve, reject) => pool.getConnection( (err:any,connection:any)=> err ? resolve(err.message) : resolve(connection) ) ) as unknown as any;
+    //console.log( conn )
     try{
-        //WithRabbitmq.sendSocket( new Date() )
+        // res.setHeader( "Content-Type", "text/html;charset=utf-8" )
+        // console.log( path.resolve( __dirname, "../src/index.html" ) )
+        // return res.sendFile( path.resolve( __dirname, "../src/index.html" ) )
+        const data = await new Promise( (resolve, reject)=>{
+            const sql = `
+                WITH cte AS (
+                    SELECT * FROM ss_pairs
+                )
+                SELECT * FROM cte
+            `
+            conn.query( sql, [], (err:any, dataList:any[])=> err ? reject(err) : resolve( dataList ) )
+        } );
         res.setHeader( "Content-Type", "text/html;charset=utf-8" )
-        //return res.end( "发送消息成功" );
-        console.log( path.resolve( __dirname, "../src/index.html" ) )
-        return res.sendFile( path.resolve( __dirname, "../src/index.html" ) )
+        return res.end( JSON.stringify( data ) );
     }catch(err:any){
-        return res.end( "发送消息失败", err.message );
+        return res.end( "获取数据失败", err.message );
     }finally{
-        console.log( "发送消息" )
+        //conn.destroy();
+        conn.release()
+        console.log( "查询数据" )
     }
 } )
 

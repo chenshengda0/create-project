@@ -72,10 +72,21 @@ module.exports = {
                 RABBITMQ_LOCALE: JSON.stringify( process.env.RABBITMQ_LOCALE ),
                 RABBITMQ_FRAMEMAX: JSON.stringify( process.env.RABBITMQ_FRAMEMAX ),
                 RABBITMQ_HOST: JSON.stringify( process.env.RABBITMQ_HOST ),
+
+                MYSQL_HOST: JSON.stringify( process.env.MYSQL_HOST ),
+                MYSQL_USER: JSON.stringify( process.env.MYSQL_USER ),
+                MYSQL_PORT: JSON.stringify( process.env.MYSQL_PORT ),
+                MYSQL_PASSWORD: JSON.stringify( process.env.MYSQL_PASSWORD ),
+                MYSQL_DATABASE: JSON.stringify( process.env.MYSQL_DATABASE ),
+                MYSQL_CHARSET: JSON.stringify( process.env.MYSQL_CHARSET ),
             }
         })
     ],
     resolve: {
         extensions: ['.js', '.json', '.ts'],
     },
+    //Error: Received packet in the wrong sequence.
+    optimization: {
+        minimize: false
+    }
 }
