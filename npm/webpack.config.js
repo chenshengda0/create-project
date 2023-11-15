@@ -38,6 +38,7 @@ module.exports = {
                             presets: [
                                 [
                                     "@babel/preset-env",
+                                    /*
                                     {
                                         "targets":{
                                             "chrome": "58",
@@ -46,6 +47,7 @@ module.exports = {
                                         "corejs":"3",
                                         "useBuiltIns": "usage"
                                     }
+                                    */
                                 ]
                             ]
                         }
