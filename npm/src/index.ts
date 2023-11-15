@@ -1,3 +1,51 @@
+#!/usr/bin/env node
+import {EventEmitter} from "events"
+const app = (require("express"))()
+const source = new EventEmitter()
+source.setMaxListeners( 500 )
+const path = require( "path" );
+import {
+    WithRabbitmq,
+} from "./Common"
+
+app.listen( process.env.LISTEN_PORT, ()=>{
+    console.log( "～服务器已启动～" )
+} )
+
+app.get( "/", async function(req:any,res:any){
+    try{
+        //WithRabbitmq.sendSocket( new Date() )
+        res.setHeader( "Content-Type", "text/html;charset=utf-8" )
+        //return res.end( "发送消息成功" );
+        console.log( path.resolve( __dirname, "../src/index.html" ) )
+        return res.sendFile( path.resolve( __dirname, "../src/index.html" ) )
+    }catch(err:any){
+        return res.end( "发送消息失败", err.message );
+    }finally{
+        console.log( "发送消息" )
+    }
+} )
+
+app.get( "/send_date", async function(req:any, res:any){
+    try{
+        await WithRabbitmq.sendSocket( new Date() )
+        //res.setHeader( "Content-Type", "text/html;charset=utf-8" )
+        return res.end( "发送消息成功" );
+    }catch(err:any){
+        return res.end( "发送消息失败", err.message );
+    }finally{
+        console.log( "发送消息" )
+    }
+} )
+
+
+process.setMaxListeners(0);
+
+
+
+
+
+/*
 const http = require( "http" )
 const stream = require( "stream" )
 const blob = new Blob( ["hello world"], {type: "text/xml"} )
@@ -31,13 +79,16 @@ const matrix = [
 const bmatrix = adjoint( matrix )
 console.time( "matrix" )
 const m = getAxis( bmatrix, [ [911, 1, 1] ], true )
-const l = m[0].pop();
+const l = m[0].pop() || 1;
 console.log( "矩阵: ", matrix )
 console.log( "伴随矩阵: ", bmatrix )
 console.log( "矩阵乘积: ", getAxis( matrix, bmatrix ) )
 console.log( "a: %d, Y: %d;", m[0][0]/l, m[0][1]/l )
 
 console.timeEnd( "matrix" )
+
+console.log( process.env )
+*/
 
 /*
 const server = http.createServer( async(req:any, res:any)=>{

@@ -1,4 +1,4 @@
-const {
+import {
     getRandom,
     T,
     getAxis,
@@ -6,8 +6,10 @@ const {
     matrix3D,
     adjoint,
     perspectiveNO,
-    runtimeDecorator,
-} = require( "./Utils" )
+    runtimeDecorator, 
+} from "./Utils"
+import WithMysql from "./WithMysql"
+import WithRabbitmq from "./WithRabbitmq"
 
 
 export {
@@ -19,4 +21,7 @@ export {
     adjoint,
     perspectiveNO,
     runtimeDecorator,
+
+    WithMysql,
+    WithRabbitmq,
 }
