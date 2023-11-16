@@ -209,16 +209,48 @@ function perspectiveNO(fovy:number, aspect:number, near:number, far:number) {
 const runtimeDecorator = function():MethodDecorator{
     return ( target:any, method:any, descriptor:any )=>{
         descriptor.value = new Proxy( descriptor.value, {
-            apply: function(...args){
+            apply: async function(...args){
+                console.time( method )
                 console.log(`============================================================START: ${method} ============================================================`)
                 try{
-                    console.log( "email: ", "chen_shengda@yeah.net" )
+                    console.log( "remoteIP: ", args[2][0].ip.match(/\d+\.\d+\.\d+\.\d+/)[0] );
+                    console.log( "requestURL: ",  `${args[2][0].protocol}://${args[2][0].hostname}${args[2][0].originalUrl}` );
+                    console.log( "email: ", "chen_shengda@yeah.net" );
                     console.log( "time: ", new Date() );
-                    console.log( "args: ", args )
-                    return Reflect.apply( ...args )
+                    const ANS = await Reflect.apply( ...args )
+                    const buf = Buffer.from( JSON.stringify( ANS ) )
+                    const bufSize = buf.length;
+                    return new Proxy( function*(){
+                        const split_limit:number = process.env.SPLIT_LIMIT as unknown as number;
+                        for( let i = 0; i < bufSize; i += split_limit ){
+                            i + split_limit >  bufSize ? yield [i, bufSize, bufSize, 0 ] : yield [i, i + split_limit, bufSize, 1]
+                        }
+                    }, {
+                        apply: function(...inner){
+                            for( const row of Reflect.apply(...inner) ){
+                                if( row[3] & 1 ){
+                                    args[2][1].setHeader( "Content-Range", `bytes ${row[0]}-${row[1]}/${row[2]}` )
+                                    args[2][1].setHeader( "Accept-Ranges", "bytes" )
+                                    args[2][1].setHeader( "Content-Length", row[1] - row[0] + 1 )
+                                    args[2][1].setHeader( "Content-Type", "text/html;charset=utf-8" )
+                                    require( "stream" ).Readable.from( buf.subarray( row[0], row[1] ) ).pipe( args[2][1] );
+                                }else{
+                                    args[2][1].setHeader( "Content-Length", row[2] )
+                                    args[2][1].setHeader( "Content-Type", "text/html;charset=utf-8" )
+                                    require( "stream" ).Readable.from( buf.subarray( row[0], row[1] ) ).pipe( args[2][1] );
+                                }
+                            }
+                        }
+                    } )()
                 }catch(err:any){
-                    console.error( err )
+                    const param = {
+                        code: 400,
+                        message: `ERROR: ${err.message}`,
+                        data: {}
+                    }
+                    return require( "stream" ).Readable.from( Buffer.from( JSON.stringify( param ) ) ).pipe( args[2][1] )
                 }finally{
+                    console.timeEnd( method )
                     console.log(`==============================================================END: ${method} ============================================================`)
                 }
 

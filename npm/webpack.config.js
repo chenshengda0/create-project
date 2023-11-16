@@ -1,5 +1,6 @@
 const path = require( "path" )
 const webpack = require( "webpack" )
+const TerserPlugin = require('terser-webpack-plugin');
 require( "dotenv" ).config()
 
 module.exports = {
@@ -61,9 +62,14 @@ module.exports = {
     plugins: [
         new webpack.DefinePlugin({
             "process.env": {
+                //监听端口
                 LISTEN_PORT: JSON.stringify( process.env.LISTEN_PORT ),
+                //分片大小
+                SPLIT_LIMIT: JSON.stringify( process.env.SPLIT_LIMIT ),
+                //SSE 交换器名称
                 EXCHANGE_NAME: JSON.stringify( process.env.EXCHANGE_NAME ),
 
+                //RABBITMQ配置
                 RABBITMQ_PROTOCOL: JSON.stringify( process.env.RABBITMQ_PROTOCOL ),
                 RABBITMQ_HOSTNAME: JSON.stringify( process.env.RABBITMQ_HOSTNAME ),
                 RABBITMQ_PORT: JSON.stringify( process.env.RABBITMQ_PORT ),
@@ -73,6 +79,7 @@ module.exports = {
                 RABBITMQ_FRAMEMAX: JSON.stringify( process.env.RABBITMQ_FRAMEMAX ),
                 RABBITMQ_HOST: JSON.stringify( process.env.RABBITMQ_HOST ),
 
+                //MYSQL配置
                 MYSQL_HOST: JSON.stringify( process.env.MYSQL_HOST ),
                 MYSQL_USER: JSON.stringify( process.env.MYSQL_USER ),
                 MYSQL_PORT: JSON.stringify( process.env.MYSQL_PORT ),
@@ -87,6 +94,9 @@ module.exports = {
     },
     //Error: Received packet in the wrong sequence.
     optimization: {
-        minimize: false
+        minimize: false,
+        minimizer: [new TerserPlugin({
+            extractComments: false,
+        })],
     }
 }
