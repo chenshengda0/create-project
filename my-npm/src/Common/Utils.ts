@@ -21,7 +21,7 @@ const T = function(source:number[][]){
 //矩阵乘积
 const getAxis = function(left:number[][], right:number[][] = [[0],[0],[0],[1]], isPoint:boolean = false):number[][]{
     const tright = isPoint ? right : T( right );
-    if( left[0].length !== tright[0].length) throw new Error("矩阵长度不匹配");
+    if( left[0].length !== tright[0].length) throw new Error(`矩阵长度不匹配`);
     return new Proxy( function*(){
         for( let n = 0; n < tright.length; ++n ){
             const target = []
@@ -41,7 +41,7 @@ const getAxis = function(left:number[][], right:number[][] = [[0],[0],[0],[1]], 
 }
 
 const matrix2D = function( source:number[][] ):number[]{
-    if( source.length !== 4 || source[0].length !== 4 ) throw new Error("请输入4*4矩阵")
+    if( source.length !== 4 || source[0].length !== 4 ) throw new Error(`请输入4*4矩阵`)
     return new Proxy( function*(){
         yield source[0][0];
         yield source[1][0];
@@ -58,7 +58,7 @@ const matrix2D = function( source:number[][] ):number[]{
 
 //获取4*4方阵
 const matrix3D = function(source:number[][]){
-    if( source.length !== 4 || source[0].length !== 4 ) throw new Error("请输入4*4矩阵")
+    if( source.length !== 4 || source[0].length !== 4 ) throw new Error(`请输入4*4矩阵`)
     const tSource = T( source )
     //二维坐标转一维坐标
     const target = new Proxy( function*(){
@@ -76,7 +76,7 @@ const matrix3D = function(source:number[][]){
 }
 
 const matrixCss = function(source:number[][]){
-    if( source.length !== 4 || source[0].length !== 4 ) throw new Error("请输入4*4矩阵")
+    if( source.length !== 4 || source[0].length !== 4 ) throw new Error(`请输入4*4矩阵`)
     const tSource = T( source )
     //二维坐标转一维坐标
     const target = new Proxy( function*(){
@@ -88,7 +88,7 @@ const matrixCss = function(source:number[][]){
     }, {
         apply(...args){
             const ANS = [...Reflect.apply(...args)]
-            return `matrix3d(${ANS.join(",")})`
+            return `matrix3d(${ANS.join(',')})`
         }
     } )() as unknown as string;
     return target;
@@ -97,11 +97,11 @@ const matrixCss = function(source:number[][]){
 
 //计算n*n方阵行列式值(拉普拉斯展开)
 const determinant = function(source:number[][]){
-    if( source.length !== source[0].length || source.length <= 0) throw new Error( "请输入n*n矩阵" )
+    if( source.length !== source[0].length || source.length <= 0) throw new Error( `请输入n*n矩阵` )
     const n = source.length;
     switch( true ){
         case n <= 0:
-            throw new Error( "请输入n*n方阵" )
+            throw new Error( `请输入n*n方阵` )
         case n === 1:
             return source[0][0];
         case n === 2:
@@ -137,7 +137,7 @@ const adjoint = function(param:number[][], tag:boolean = false){
     let source:number[][];
     let n:number = 0;
     if( tag ){
-        if( param.length !== param[0].length && param.length < 1 ) throw new Error( "请输入n*n矩阵" )
+        if( param.length !== param[0].length && param.length < 1 ) throw new Error( `请输入n*n矩阵` )
         source = new Proxy( function(){
             const target = Array.from( {length: param.length + 1}, ()=> Array.from( {length: param.length + 1}, ()=>0 ) )
             for( let i = 0; i < param.length; ++i ){
@@ -150,7 +150,7 @@ const adjoint = function(param:number[][], tag:boolean = false){
         }, {apply:(...args)=>Reflect.apply(...args)} )() as unknown as number[][];
         n = source.length;
     }else{
-        if( param.length !== param[0].length && param.length < 2 ) throw new Error( "请输入n*n矩阵" )
+        if( param.length !== param[0].length && param.length < 2 ) throw new Error( `请输入n*n矩阵` )
         source = param;
         n = source.length; 
     }
@@ -247,9 +247,9 @@ const runtimeDecorator = function():MethodDecorator{
             apply: function(...args){
                 console.log(`============================================================START: ${method} ============================================================`)
                 try{
-                    console.log( "email: ", "chen_shengda@yeah.net" )
-                    console.log( "time: ", new Date() );
-                    console.log( "args: ", args )
+                    console.log( `email: `, `chen_shengda@yeah.net` )
+                    console.log( `time: `, new Date() );
+                    console.log( `args: `, args )
                     return Reflect.apply( ...args )
                 }catch(err:any){
                     console.error( err )

@@ -24,26 +24,17 @@ module.exports = {
                 test: /\.ts$/,
                 exclude: /node_modules/gi,
                 use: [
+                    /*
                     {
                         loader: "babel-loader",
                         options: {
                             presets: [
                                 [
                                     "@babel/preset-env",//指定环境插件
-                                    /*
-                                    {//配置信息
-                                        "targets":{
-                                            "chrome": "58",
-                                            "ie": "11"
-                                        },
-                                        "corejs":"3",
-                                        "useBuiltIns": "usage"
-                                    }
-                                    */
                                 ]
                             ]
                         }
-                    },
+                    },*/
                     {
                         loader: "ts-loader",
                     }
