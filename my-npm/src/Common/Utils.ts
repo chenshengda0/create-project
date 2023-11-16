@@ -1,4 +1,4 @@
-export const getRandom = function(arr:number[], isInt:boolean = false ){
+const getRandom = function(arr:number[], isInt:boolean = false ){
     const min = Math.min( ...arr )
     const max = Math.max( ...arr )
     const num = Math.random() * ( max - min ) + min;
@@ -6,7 +6,7 @@ export const getRandom = function(arr:number[], isInt:boolean = false ){
 }
 
 //二维数组转置
-export const T = function(source:number[][]){
+const T = function(source:number[][]){
     const row = source.length;
     const col = source[0].length;
     const target = Array.from( {length: col}, ()=> Array.from( {length:row}, ()=>0 ) )
@@ -19,7 +19,7 @@ export const T = function(source:number[][]){
 }
 
 //矩阵乘积
-export const getAxis = function(left:number[][], right:number[][] = [[0],[0],[0],[1]], isPoint:boolean = false):number[][]{
+const getAxis = function(left:number[][], right:number[][] = [[0],[0],[0],[1]], isPoint:boolean = false):number[][]{
     const tright = isPoint ? right : T( right );
     if( left[0].length !== tright[0].length) throw new Error("矩阵长度不匹配");
     return new Proxy( function*(){
@@ -40,7 +40,7 @@ export const getAxis = function(left:number[][], right:number[][] = [[0],[0],[0]
     } )() as unknown as number[][];
 }
 
-export const matrix2D = function( source:number[][] ):number[]{
+const matrix2D = function( source:number[][] ):number[]{
     if( source.length !== 4 || source[0].length !== 4 ) throw new Error("请输入4*4矩阵")
     return new Proxy( function*(){
         yield source[0][0];
@@ -57,7 +57,7 @@ export const matrix2D = function( source:number[][] ):number[]{
 }
 
 //获取4*4方阵
-export const matrix3D = function(source:number[][]){
+const matrix3D = function(source:number[][]){
     if( source.length !== 4 || source[0].length !== 4 ) throw new Error("请输入4*4矩阵")
     const tSource = T( source )
     //二维坐标转一维坐标
@@ -75,9 +75,28 @@ export const matrix3D = function(source:number[][]){
     return target;
 }
 
+const matrixCss = function(source:number[][]){
+    if( source.length !== 4 || source[0].length !== 4 ) throw new Error("请输入4*4矩阵")
+    const tSource = T( source )
+    //二维坐标转一维坐标
+    const target = new Proxy( function*(){
+        for( let i = 0 ; i < tSource.length; ++i ){
+            for( let j = 0; j < tSource[i].length; ++j ){
+                yield tSource[i][j]
+            }
+        }
+    }, {
+        apply(...args){
+            const ANS = [...Reflect.apply(...args)]
+            return `matrix3d(${ANS.join(",")})`
+        }
+    } )() as unknown as string;
+    return target;
+}
+
 
 //计算n*n方阵行列式值(拉普拉斯展开)
-export const determinant = function(source:number[][]){
+const determinant = function(source:number[][]){
     if( source.length !== source[0].length || source.length <= 0) throw new Error( "请输入n*n矩阵" )
     const n = source.length;
     switch( true ){
@@ -87,82 +106,24 @@ export const determinant = function(source:number[][]){
             return source[0][0];
         case n === 2:
             return source[0][0] * source[1][1] - source[1][0] * source[0][1];
-        case n === 3:
-            let three = 0;
-            const one = Array.from( {length: n}, ()=>Array.from({length: n<<1}, ()=>0) )
-            for( let i = 0; i < n; ++i ){
-                for( let j = 0; j < (n<<1); ++j ){
-                    if( j < n ){
-                        one[i][j] = source[i][j]
-                    }else{
-                        one[i][j] = source[i][j % n]
-                    }
-                }
-            }
-            //console.log( one )
-            for( let col = 0; col < n; ++col ){
-                const DFS = function(c:number = 0, r:number = 0, current:number = 1):number{
-                    switch( true ){
-                        case r >= n:
-                            return current;
-                        default:
-                            return DFS( c + 1, r + 1, current * one[r][c] )
-                    }
-                }
-                const current = DFS( col )
-                three += current;
-                //console.log( current, three )
-            }
-
-            for( let col = n; col < n<<1; ++col ){
-                const DFS = function(c:number = 0, r:number = 0, current:number = 1):number{
-                    switch( true ){
-                        case r >= n:
-                            return current;
-                        default:
-                            return DFS( c - 1, r + 1, current * one[r][c] )
-                    }
-                }
-                const current = DFS( col )
-                three -= current;
-                
-            }
-            //console.log( source, three )
-            return three;
         default:
-            let four = 0;
+            let res = 0;
             const first = [ ...source[0] ]
             for( let i = 0; i < first.length; ++i ){
-                if( (i&1) === 1 ){
-                    four -= new Proxy( function*(index:number){
-                        for( let r = 1; r < n; ++r ){
-                            const current = []
-                            for( let c = 0; c < n; ++c ){
-                                if( c !== index ) current.push( source[r][c] )
-                            }
-                            yield current;
+                res += new Proxy( function*(index:number){
+                    for( let r = 1; r < n; ++r ){
+                        const current = []
+                        for( let c = 0; c < n; ++c ){
+                            if( c !== index ) current.push( source[r][c] )
                         }
-                    }, {apply: (...args)=>{
-                        const result = [...Reflect.apply(...args)]
-                        return determinant( result );
-                    }} )( i ) as unknown as number * first[i];
-                }else{
-                    four += new Proxy( function*(index:number){
-                        for( let r = 1; r < n; ++r ){
-                            const current = []
-                            for( let c = 0; c < n; ++c ){
-                                if( c !== index ) current.push( source[r][c] )
-                            }
-                            yield current;
-                        }
-                    }, {apply: (...args)=>{
-                        const result = [...Reflect.apply(...args)]
-                        return determinant( result );
-                    }} )( i ) as unknown as number * first[i];
-                }
+                        yield current;
+                    }
+                }, {apply: (...args)=>{
+                    const result = [...Reflect.apply(...args)]
+                    return determinant( result );
+                }} )( i ) as unknown as number * first[i] * (-1) ** i;
             }
-            //console.log( source, four )
-            return four;
+            return res;
     }
 }
 
@@ -172,7 +133,7 @@ export const determinant = function(source:number[][]){
     tag: 是否需要转齐次矩阵
     return: 伴随矩阵
 */
-export const adjoint = function(param:number[][], tag:boolean = false){
+const adjoint = function(param:number[][], tag:boolean = false){
     let source:number[][];
     let n:number = 0;
     if( tag ){
@@ -235,7 +196,7 @@ export const adjoint = function(param:number[][], tag:boolean = false){
 }
 
 //透视矩阵
-export function perspectiveNO(fovy:number, aspect:number, near:number, far:number) {
+function perspectiveNO(fovy:number, aspect:number, near:number, far:number) {
     const f = 1.0 / Math.tan(fovy / 2);
     const out = Array.from( {length:16}, ()=>0 )
     out[0] = f / aspect;
@@ -280,7 +241,7 @@ export function perspectiveNO(fovy:number, aspect:number, near:number, far:numbe
     } )() as unknown as number[][]
 }
 
-export const runtimeDecorator = function():MethodDecorator{
+const runtimeDecorator = function():MethodDecorator{
     return ( target:any, method:any, descriptor:any )=>{
         descriptor.value = new Proxy( descriptor.value, {
             apply: function(...args){
@@ -299,4 +260,17 @@ export const runtimeDecorator = function():MethodDecorator{
             }
         } )
     }
+}
+
+export {
+    getRandom,
+    T,
+    getAxis,
+    matrix2D,
+    matrix3D,
+    matrixCss,
+    determinant,
+    adjoint,
+    perspectiveNO,
+    runtimeDecorator,
 }

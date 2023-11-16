@@ -4,6 +4,7 @@ import {
     getAxis,
     matrix3D,
     matrix2D,
+    matrixCss,
     determinant,
     adjoint,
     perspectiveNO,
@@ -16,8 +17,9 @@ export {
     getAxis,
     matrix3D,
     matrix2D,
+    matrixCss,
     determinant,
     adjoint,
     perspectiveNO,
-    runtimeDecorator, 
+    runtimeDecorator,
 }

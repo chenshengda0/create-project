@@ -3,9 +3,11 @@ const webpack = require( "webpack" )
 require('dotenv').config()
 
 module.exports = {
-
     resolve: {
         extensions: [".js", ".json", ".ts"],
+        // fallback: {
+        //     buffer: require.resolve('buffer/'),
+	    // },
     },
     performance:{
         hints: false,
@@ -28,6 +30,7 @@ module.exports = {
                             presets: [
                                 [
                                     "@babel/preset-env",//指定环境插件
+                                    /*
                                     {//配置信息
                                         "targets":{
                                             "chrome": "58",
@@ -36,6 +39,7 @@ module.exports = {
                                         "corejs":"3",
                                         "useBuiltIns": "usage"
                                     }
+                                    */
                                 ]
                             ]
                         }
