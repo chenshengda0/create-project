@@ -1,15 +1,3 @@
-import {
-    getRandom,
-    T,
-    getAxis,
-    matrix3D,
-    matrix2D,
-    determinant,
-    adjoint,
-    perspectiveNO,
-    runtimeDecorator, 
-} from "../Common"
-
 class ShowImage{
     private width:number = 0;
     private height:number = 0;

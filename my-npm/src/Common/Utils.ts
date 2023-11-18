@@ -26,9 +26,9 @@ const getAxis = function(left:number[][], right:number[][] = [[0],[0],[0],[1]], 
         for( let n = 0; n < tright.length; ++n ){
             const target = []
             for( let m = 0; m < left.length; ++m ){
-                target.push( (function( source:number[], center:number[] ){
+                target.push( ( function( source:number[], center:number[] ){
                     return source.reduce( (prev:number, cur:number, index:number) => prev + source[index] * center[index], 0 )
-                })( left[m], tright[n] ) )
+                } )( left[m], tright[n] ) )
             }
             yield target;
         }

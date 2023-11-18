@@ -10,6 +10,10 @@ module.exports = {
             stream: require.resolve( 'stream-browserify' ),
             buffer: require.resolve('buffer/'),
 	    },
+        alias: {
+            Components: path.resolve( __dirname, "src/Components" ),
+            Common: path.resolve( __dirname, "src/Common" )
+        }
     },
     performance:{
         hints: false,
@@ -60,6 +64,16 @@ module.exports = {
         new webpack.ProvidePlugin({
             process: "process/browser",
             Buffer: [ "buffer", "Buffer" ],
+            T: ["dreamer-common-def", "T"],
+            getRandom: ["dreamer-common-def", "getRandom"],
+            getAxis: ["dreamer-common-def", "getAxis"],
+            matrix2D: ["dreamer-common-def", "matrix2D"],
+            matrix3D: ["dreamer-common-def", "matrix3D"],
+            matrixCss: ["dreamer-common-def", "matrixCss"],
+            determinant: ["dreamer-common-def", "determinant"],
+            adjoint: ["dreamer-common-def", "adjoint"],
+            perspectiveNO: ["dreamer-common-def", "perspectiveNO"],
+            runtimeDecorator: ["dreamer-common-def", "runtimeDecorator"],
         }),
         new webpack.DefinePlugin({
             "process.env" : {
