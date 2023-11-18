@@ -1,9 +1,10 @@
 import {
     FileRouter
-} from "./Routers"
-const app = require( "express" )()
-app.listen( process.env.LISTEN_PORT, ()=>{
-    console.log( `服务器已启动,端口: ${process.env.LISTEN_PORT}～` )
+} from "Routers"
+
+const app = express()
+app.listen( LISTEN_PORT, ()=>{
+    console.log( "服务器已启动,端口: %d～", LISTEN_PORT )
 } )
 
 app.use( "/",  FileRouter)

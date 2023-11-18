@@ -26,15 +26,36 @@ module.exports = {
         ]
     },
     plugins: [
+        new webpack.ProvidePlugin({
+            express: "express",
+            Router: ["express", "Router"],
+            stream: "stream",
+            createGzip: ["zlib", "createGzip"],
+            fs: "fs",
+
+            T: ["dreamer-common-def", "T"],
+            getRandom: ["dreamer-common-def", "getRandom"],
+            getAxis: ["dreamer-common-def", "getAxis"],
+            matrix2D: ["dreamer-common-def", "matrix2D"],
+            matrix3D: ["dreamer-common-def", "matrix3D"],
+            matrixCss: ["dreamer-common-def", "matrixCss"],
+            determinant: ["dreamer-common-def", "determinant"],
+            adjoint: ["dreamer-common-def", "adjoint"],
+            perspectiveNO: ["dreamer-common-def", "perspectiveNO"],
+            runtimeDecorator: ["dreamer-common-def", "runtimeDecorator"],
+        }),
         new webpack.DefinePlugin({
-            "process.env": {
-                TITLE: JSON.stringify( process.env.TITLE ),
-                LISTEN_PORT: JSON.stringify( process.env.LISTEN_PORT ),
-            }
+            STATICS: JSON.stringify( path.resolve( __dirname, "./src/Statics" ) ),
+            TITLE: JSON.stringify( process.env.TITLE ),
+            LISTEN_PORT: JSON.stringify( process.env.LISTEN_PORT ),
         })
     ],
     resolve: {
         extensions: [".js", ".json", ".ts"],
+        alias: {
+            'Routers': path.resolve( __dirname, "./src/Routers" ), 
+            'Commons': path.resolve( __dirname, "./src/Commons" ),
+        }
     },
     optimization: {
         minimize: false,
