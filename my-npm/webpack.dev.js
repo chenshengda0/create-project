@@ -27,7 +27,7 @@ module.exports = merge(
         },
         devServer:{
             static: "devDist",
-            open: true,
+            open: false,
             compress: true,
             //host: "127.0.0.1",
             hot: true,

@@ -1,13 +1,15 @@
 const TerserPlugin = require( "terser-webpack-plugin" )
 const webpack = require( "webpack" )
+const path = require( "path" )
 require('dotenv').config()
 
 module.exports = {
     resolve: {
         extensions: [".js", ".json", ".ts"],
-        // fallback: {
-        //     buffer: require.resolve('buffer/'),
-	    // },
+        fallback: {
+            stream: require.resolve( 'stream-browserify' ),
+            buffer: require.resolve('buffer/'),
+	    },
     },
     performance:{
         hints: false,
@@ -55,14 +57,18 @@ module.exports = {
         ]
     },
     plugins: [
+        new webpack.ProvidePlugin({
+            process: "process/browser",
+            Buffer: [ "buffer", "Buffer" ],
+        }),
         new webpack.DefinePlugin({
-            "process.env": {
+            "process.env" : {
                 DEV_PORT: JSON.stringify( process.env.DEV_PORT ),
                 ENR: JSON.stringify( process.env.ENR ),
                 ENG: JSON.stringify( process.env.ENG ),
                 ENB: JSON.stringify( process.env.ENB ),
                 MATRIX: JSON.stringify( process.env.MATRIX ),
             }
-        })
+        }),
     ]
 }
