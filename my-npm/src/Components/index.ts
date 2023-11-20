@@ -1,7 +1,9 @@
 import {
-    Hello
-} from "./Hello"
+    SaveComponent,
+    UploadComponent,
+} from "./Handles"
 
 export {
-    Hello,
+    SaveComponent,
+    UploadComponent,
 }

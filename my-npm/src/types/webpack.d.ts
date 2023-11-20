@@ -1,6 +1,12 @@
 //声明 webpack.resolve.alias 模块别名
 declare module "Components";
 declare module "Common";
+declare module "Pages";
+declare module "Reduxs";
+
+//图片
+declare module "*.png"
+declare module "*.jpg"
 
 //生成随机数
 declare const getRandom: (arr: number[], isInt?: boolean) => number;
@@ -31,3 +37,7 @@ declare function perspectiveNO(fovy: number, aspect: number, near: number, far: 
 
 //方法装饰器
 declare const runtimeDecorator: () => MethodDecorator;
+
+declare interface Window{
+    storeData: any
+};

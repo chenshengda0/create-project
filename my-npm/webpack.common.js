@@ -12,7 +12,9 @@ module.exports = {
 	    },
         alias: {
             Components: path.resolve( __dirname, "src/Components" ),
-            Common: path.resolve( __dirname, "src/Common" )
+            Common: path.resolve( __dirname, "src/Common" ),
+            Pages: path.resolve( __dirname, "src/Pages" ),
+            Reduxs: path.resolve( __dirname, "src/Reduxs" )
         }
     },
     performance:{
@@ -64,6 +66,7 @@ module.exports = {
         new webpack.ProvidePlugin({
             process: "process/browser",
             Buffer: [ "buffer", "Buffer" ],
+
             T: ["dreamer-common-def", "T"],
             getRandom: ["dreamer-common-def", "getRandom"],
             getAxis: ["dreamer-common-def", "getAxis"],
@@ -76,13 +79,15 @@ module.exports = {
             runtimeDecorator: ["dreamer-common-def", "runtimeDecorator"],
         }),
         new webpack.DefinePlugin({
-            "process.env" : {
-                DEV_PORT: JSON.stringify( process.env.DEV_PORT ),
-                ENR: JSON.stringify( process.env.ENR ),
-                ENG: JSON.stringify( process.env.ENG ),
-                ENB: JSON.stringify( process.env.ENB ),
-                MATRIX: JSON.stringify( process.env.MATRIX ),
-            }
+            DEV_PORT: JSON.stringify( process.env.DEV_PORT ),
+            ENR: JSON.stringify( process.env.ENR ),
+            ENG: JSON.stringify( process.env.ENG ),
+            ENB: JSON.stringify( process.env.ENB ),
+            MATRIX: JSON.stringify( process.env.MATRIX ),
+
+            //store
+            SET_COLOR_STORE: JSON.stringify( process.env.SET_COLOR_STORE ),
+            SET_BLOB_STORE: JSON.stringify( process.env.SET_BLOB_STORE ),
         }),
     ]
 }
