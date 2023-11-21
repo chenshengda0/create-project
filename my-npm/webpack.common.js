@@ -32,7 +32,6 @@ module.exports = {
                 test: /\.ts$/,
                 exclude: /node_modules/gi,
                 use: [
-                    /*
                     {
                         loader: "babel-loader",
                         options: {
@@ -42,7 +41,7 @@ module.exports = {
                                 ]
                             ]
                         }
-                    },*/
+                    },
                     {
                         loader: "ts-loader",
                     }
