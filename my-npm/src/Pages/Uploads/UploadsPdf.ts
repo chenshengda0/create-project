@@ -13,7 +13,7 @@ const setWindowEvents = new Proxy( function(){
                 console.log( "执行代理6" )
             }
 
-            static setWindowEvent(){
+            render(){
                 PackageComponent.canvas.addEventListener( "click", async function(e:any){
                     switch( true ){
                         case PackageComponent.upload.inArea( e.x, e.y ):
@@ -54,6 +54,15 @@ const setWindowEvents = new Proxy( function(){
                             break;
                     }
                 } );
+                ;(function move(){
+                    PackageComponent.ctx.clearRect( 0, 0, PackageComponent.W, PackageComponent.H )
+                    PackageComponent.ctx.drawImage( PackageComponent.scanvas, 0, 0 )
+                    PackageComponent.upload.draw( PackageComponent.hctx )
+                    PackageComponent.ctx.drawImage( PackageComponent.hcanvas, 0, 0 )
+                    window.requestAnimationFrame( move )
+                })();
+        
+                PackageComponent.container.appendChild( PackageComponent.canvas )
             }
         }
     }
@@ -169,6 +178,8 @@ abstract class IUploadsPdf{
     protected static sctx:any;
 
     protected static props:any;
+
+    abstract render():any;
 }
 
 @setWindowEvents()
@@ -223,19 +234,5 @@ abstract class IUploadsPdf{
 })
 @UploadsPdfParent()
 export default class UploadsPdf extends IUploadsPdf{
-    render(){
-        UploadsPdf.setWindowEvent()
-        ;(function move(){
-            UploadsPdf.ctx.clearRect( 0, 0, UploadsPdf.W, UploadsPdf.H )
-            UploadsPdf.ctx.drawImage( UploadsPdf.scanvas, 0, 0 )
-            UploadsPdf.upload.draw( UploadsPdf.hctx )
-            UploadsPdf.ctx.drawImage( UploadsPdf.hcanvas, 0, 0 )
-            window.requestAnimationFrame( move )
-        })();
-
-        UploadsPdf.container.appendChild( UploadsPdf.canvas )
-    }
-
-    static setWindowEvent(){}
-
+    render(){}
 }
