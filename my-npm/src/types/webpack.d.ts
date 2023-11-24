@@ -7,6 +7,8 @@ declare module "Reduxs";
 //图片
 declare module "*.png"
 declare module "*.jpg"
+declare module "*.webp"
+declare module "*.gif"
 
 //生成随机数
 declare const getRandom: (arr: number[], isInt?: boolean) => number;
