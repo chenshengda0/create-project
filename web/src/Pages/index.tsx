@@ -1,5 +1,9 @@
-import {HomePage} from "Pages/Home"
+import {
+    HomePage,
+    HomeRotatePage,
+} from "Pages/Home"
 
 export {
     HomePage,
+    HomeRotatePage,
 }

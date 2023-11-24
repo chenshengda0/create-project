@@ -74,6 +74,7 @@ class App extends Component<any>{
                 <Switch>
                     {/*首页*/}
                     <Route exact path="/" component={PageMap.HomePage}></Route>
+                    <Route exact path="/rotate" component={PageMap.HomeRotatePage}></Route>
 
                     {/*TRON网络*/}
                     {/* <Route exact path="/import_tron_private" component={PageMap.ImportTronPrivatePage}></Route>

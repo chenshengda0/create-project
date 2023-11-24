@@ -14,11 +14,28 @@ module.exports = function override(config) {
 
     config.plugins = (config.plugins || []).concat([
         new webpack.ProvidePlugin({
-            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-            'process.env.MY_ENV': JSON.stringify(process.env.MY_ENV),
             process: "process/browser",
             Buffer: ["buffer", "Buffer"],
+
+            T: ["dreamer-common-def", "T"],
+            getRandom: ["dreamer-common-def", "getRandom"],
+            getAxis: ["dreamer-common-def", "getAxis"],
+            matrix2D: ["dreamer-common-def", "matrix2D"],
+            matrix3D: ["dreamer-common-def", "matrix3D"],
+            matrixCss: ["dreamer-common-def", "matrixCss"],
+            determinant: ["dreamer-common-def", "determinant"],
+            adjoint: ["dreamer-common-def", "adjoint"],
+            perspectiveNO: ["dreamer-common-def", "perspectiveNO"],
+            runtimeDecorator: ["dreamer-common-def", "runtimeDecorator"],
+
+            REACT_APP_PROJECT_TITLE: JSON.stringify( process.env.REACT_APP_PROJECT_TITLE ),
+            REACT_APP_PROJECT_LOGO: JSON.stringify( process.env.REACT_APP_PROJECT_LOGO ),
+        }),
+        new webpack.DefinePlugin({
+            //store
+            REACT_APP_STORE_TEST: JSON.stringify( process.env.REACT_APP_STORE_TEST ),
         }),
     ]);
+
     return config;
 };
