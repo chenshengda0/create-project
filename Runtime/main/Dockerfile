@@ -1,5 +1,5 @@
 FROM nginx
-RUN apt update && apt upgrade && apt install -y iputils-ping
+RUN apt-get update -y && apt-get upgrade -y && apt install -y iputils-ping
 RUN sed -i 's/^.*gzip.*$//' /etc/nginx/nginx.conf
 RUN sed -i "/\*\.conf;$/i\    gzip on;" /etc/nginx/nginx.conf
 RUN sed -i "/\*\.conf;$/i\    gzip_min_length 1k;" /etc/nginx/nginx.conf
